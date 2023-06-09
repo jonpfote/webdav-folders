@@ -4,7 +4,7 @@ This extension was created to connect to a WebDAV server using a `.code-workspac
 
 > ## Security Warning
 >
-> This extension **trusts ANY configuration** even in **`untrusted workspaces`**. This means that this extension will connect to any server which is configured in the current workspace settings.
+> This extension **trusts ANY configuration** even in **`untrusted workspaces`**. This means that this extension will connect to any server which is configured in the current workspace settings and added to the workspace.
 >
 > **`Passwords`** are stored as **plain text**. Anyone who can access your workspace config will also be able to read the password. **Use a different extension if you want to store the password securely.**
 
@@ -16,6 +16,7 @@ This extension was created to connect to a WebDAV server using a `.code-workspac
 - requests via `https` by default (`http` is also supported)
 - allow file editing in untrusted workspaces
 - support for multiple connections to different servers/as different users at the same time
+- translations for english and german.
 
 ## Extension Settings
 

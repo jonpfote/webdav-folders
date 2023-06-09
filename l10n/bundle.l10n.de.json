@@ -1,0 +1,15 @@
+{
+	"The File could not be loaded.": "Die Datei konnte nicht geladen werden.",
+	"The content of the directory could not be loaded.": "Der Inhalt des Ordners konnte nicht geladen werden.",
+	"The content of the file could not be loaded.": "Der Inhalt der Datei konnte nicht geladen werden.",
+	"The file could not be created or written to.": "Die Datei konne nicht erstellt oder überschrieben werden.",
+	"The file could not be renamed.": "Die Datei konne nicht umbenannt werden.",
+	"The file could not be copied.": "Die Datei konne nicht kopiert werden.",
+	"The Config is invalid: No config found.": "Die Konfiguration ist ungültig: Keine Konfiguration gefunden.",
+	"The Config is invalid: No 'host' of type 'string' in config.": "Die Konfiguration ist ungültig: Kein 'host' vom Typ 'string' in der Konfiguration.",
+	"Authentication type '{0}' is not supported!": "Der Authentifikationstyp '{0}' wird nicht unterstützt.",
+	"The Extension could not be initialized.": "Die Erweiterung konnte nicht initialisiert werden.",
+	"Error for file \"{0}\"; {1}": "Fehler für Datei \"{0}\"; {1}",
+	"Error {0} for file \"{1}\"; {2}": "Fehler {0} für Datei \"{1}\"; {2}",
+	"Unable to show error message.": "Die Fehlermeldung kann nicht angezeigt werden."
+}

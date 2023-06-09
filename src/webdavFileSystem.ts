@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as webdav from "webdav";
 
-
 function isFileStat(test: webdav.FileStat | webdav.ResponseDataDetailed<webdav.FileStat>): test is webdav.FileStat {
   return (test as webdav.FileStat).filename !== undefined;
 };
@@ -77,7 +76,7 @@ export default class WebdavFS {
 			return fileStat;
 		} catch (error) {
 			handleErrorFromUri(uri)(error);
-			throw Error("The File could not be loaded.");
+			throw Error(vscode.l10n.t("The File could not be loaded."));
 		}
 	}
 
@@ -114,7 +113,7 @@ export default class WebdavFS {
 
 		} catch (error) {
 			handleErrorFromUri(uri)(error);
-			throw Error("The content of the directory could not be loaded.");
+			throw Error(vscode.l10n.t("The content of the directory could not be loaded."));
 		}
 	}
 
@@ -166,7 +165,7 @@ export default class WebdavFS {
 
 		} catch (error) {
 			handleErrorFromUri(uri)(error);
-			throw Error("The content of the file could not be loaded.");
+			throw Error(vscode.l10n.t("The content of the file could not be loaded."));
 		}
 	}
 
@@ -218,7 +217,7 @@ export default class WebdavFS {
 			.catch(handleErrorFromUri(uri));
 		} catch (error) {
 			handleErrorFromUri(uri)(error);
-			throw Error("The file could not be created or written to.");
+			throw Error(vscode.l10n.t("The file could not be created or written to."));
 		}
 	}
 
@@ -263,7 +262,7 @@ export default class WebdavFS {
 				.catch(handleErrorFromUri(oldUri));
 		} catch (error) {
 			handleErrorFromUri(oldUri)(error);
-			throw Error("The file could not be renamed.");
+			throw Error(vscode.l10n.t("The file could not be renamed."));
 		}
 	}
 
@@ -294,7 +293,7 @@ export default class WebdavFS {
 				.catch(handleErrorFromUri(oldUri));
 		} catch (error) {
 			handleErrorFromUri(oldUri)(error);
-			throw Error("The file could not be copied.");
+			throw Error(vscode.l10n.t("The file could not be copied."));
 		}
 	}
 
@@ -316,20 +315,20 @@ export default class WebdavFS {
 		// Get the config of the current workspace
 		const workspaceConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('jonpfote.webdav-folders');
 		if(!workspaceConfig) {
-			throw vscode.FileSystemError.FileNotFound("The Config is invalid: No config found.");
+			throw vscode.FileSystemError.FileNotFound(vscode.l10n.t("The Config is invalid: No config found."));
 		}
 
 		// Check if the config is set correctly
 		const webdavFolderConfig: any =workspaceConfig[uri.authority];
 
 		if(!webdavFolderConfig || typeof webdavFolderConfig !== "object" || Array.isArray(webdavFolderConfig)) {
-			throw vscode.FileSystemError.FileNotFound("The Config is invalid: No config found.");
+			throw vscode.FileSystemError.FileNotFound(vscode.l10n.t("The Config is invalid: No config found."));
 		}
 
 		const useSSL = typeof webdavFolderConfig.ssl === "boolean" ? webdavFolderConfig.ssl : true;
 		const host = webdavFolderConfig.host;
 		if(typeof host !== "string") {
-			throw vscode.FileSystemError.FileNotFound("The Config is invalid: No 'host' of type 'string' in config.");
+			throw vscode.FileSystemError.FileNotFound(vscode.l10n.t("The Config is invalid: No 'host' of type 'string' in config."));
 		}
 
 		const authtype = webdavFolderConfig.authtype;
@@ -341,7 +340,7 @@ export default class WebdavFS {
 				opt.authType = webdav.AuthType.Digest;
 			} else {
 				throw new Error(
-					`Authentication type '${authtype}' is not supported!`
+					vscode.l10n.t(`Authentication type '{0}' is not supported!`, authtype)
 				);
 			}
 
@@ -363,7 +362,7 @@ export default class WebdavFS {
 
 		} catch (error) {
 			handleErrorFromUri(uri)(error);
-			throw Error("The Extension could not be initialized.");
+			throw Error(vscode.l10n.t("The Extension could not be initialized."));
 		}
 	}
 }
@@ -403,12 +402,16 @@ function getUint8ArrayFromFileContentResponse(buffer: webdav.BufferLike | string
 const handleErrorFromUri = (uri: vscode.Uri): (reason: any) => PromiseLike<never> => {
 	const errorHandler = (error: any): never => {
 		if(typeof error === "string") {
-			vscode.window.showErrorMessage(`Error for file "${uri.path}"; ${error}`);
+			vscode.window.showErrorMessage(
+				vscode.l10n.t(`Error for file "{0}"; {1}`, uri.path, error)
+			);
 			throw Error(error);
 		}
 
 		if(error && typeof error === "object") {
-			vscode.window.showErrorMessage(`Error ${error.status} for file "${uri.path}"; ${error.message}`);
+			vscode.window.showErrorMessage(
+				vscode.l10n.t(`Error {0} for file "{1}"; {2}`, error.status, uri.path, error.message)
+			);
 			if (error.status === 403 || error.status === 401 ) {
 				throw vscode.FileSystemError.NoPermissions(uri);
 			}
@@ -418,7 +421,7 @@ const handleErrorFromUri = (uri: vscode.Uri): (reason: any) => PromiseLike<never
 			throw error;
 		}
 
-		throw Error("Unable to show error message.");
+		throw Error(vscode.l10n.t("Unable to show error message."));
 	};
 	return errorHandler;
 };
