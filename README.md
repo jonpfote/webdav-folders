@@ -1,71 +1,90 @@
-# webdav README
+# WebDAV Filesystem for `.code-workspace` files
 
-This is the README for your extension "webdav". After writing up a brief description, we recommend including the following sections.
+This extension was created to connect to a WebDAV server using a `.code-workspace` file. Configuration is also possible in the user settings.
+
+> ## Security Warning
+>
+> This extension **trusts ANY configuration** even in **`untrusted workspaces`**. This means that this extension will connect to any server which is configured in the current workspace settings.
+>
+> **`Passwords`** are stored as **plain text**. Anyone who can access your workspace config will also be able to read the password. **Use a different extension if you want to store the password securely.**
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- connect to a WebDAV server
+- change any configuration in workspace settings or user settings
+- use `basic` or `digest` authentication with username and password
+- requests via `https` by default (`http` is also supported)
+- allow file editing in untrusted workspaces
+- support for multiple connections to different servers/as different users at the same time
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+You have to manually create a `example.code-workspace` file.
 
-For example:
+### Example Config
+The following configuration (`example.code-workspace`) will connect to `example.com` via `https` without any authentication (no username/passwort).
+```json
+{
+	"folders": [
+		{
+			"uri": "webdav://my-folder-id"
+		}
+	],
+	"settings": {
+		"jonpfote.webdav-folders": {
+			"my-folder-id": {
+				"host": "example.com",
+				// authentication is optional (see below)
+			}
+		}
+	}
+}
+```
 
-This extension contributes the following settings:
+The object `"jonpfote.webdav-folders": { ... }` can also be put in `User Settings (JSON)`. Look at this example:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+```json
+example.code-workspace
+{
+	"folders": [
+		{
+			"uri": "webdav://my-folder-id"
+		}
+		// multiple folders at the same time are possible
+	]
+}
 
-## Known Issues
+settings.json
+{
+	"settings": {
+		"jonpfote.webdav-folders": { ... }
+	}
+}
+```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+
+
+### Usage of `basic` or `digest` authentication
+```json
+"my-folder-id": {
+	"host": "example.com",
+	"authtype": "basic", // "digest" is also possible
+	"username": "my-username",
+	"password": "secret-password-as-plain-text"
+}
+```
+
+### Disable `https` / Use a `http` connection
+```json
+"my-folder-id": {
+	"host": "example.com",
+	"ssl": false, // default: true
+}
+```
+
+### Set a custom port
+Use `"host": "example.com:1234"` in the settings.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This extension uses a JS library called `webdav` (v4.11.2) by `@perry-mitchell`. It is licensed under MIT an can be viewed at [github.com/perry-mitchell/webdav-client](https://github.com/perry-mitchell/webdav-client)
