@@ -405,23 +405,36 @@ const handleErrorFromUri = (uri: vscode.Uri): (reason: any) => PromiseLike<never
 			vscode.window.showErrorMessage(
 				vscode.l10n.t(`Error for file "{0}"; {1}`, uri.path, error)
 			);
-			throw Error(error);
+			throw vscode.FileSystemError.Unavailable(uri);
 		}
 
 		if(error && typeof error === "object") {
-			vscode.window.showErrorMessage(
-				vscode.l10n.t(`Error {0} for file "{1}"; {2}`, error.status, uri.path, error.message)
-			);
-			if (error.status === 403 || error.status === 401 ) {
-				throw vscode.FileSystemError.NoPermissions(uri);
+			if(error.status || error.code) {
+				// Do not show an error message for 404 because of some edge cases when uploading
+				// a file using drag and drop.
+				if (error.status === 404 || error.code === 'FileNotFound') {
+					throw vscode.FileSystemError.FileNotFound(uri);
+				}
+
+
+				vscode.window.showErrorMessage(
+					vscode.l10n.t(`Error {0} for file "{1}"; {2}`, error.status ?? error.code, uri.path, error.message)
+				);
+				if (error.status === 403 || error.status === 401 || error.status === 507 || error.code === 'NoPermissions') {
+					throw vscode.FileSystemError.NoPermissions(uri);
+				}
+			} else {
+				vscode.window.showErrorMessage(
+					vscode.l10n.t(`Error for file "{0}"; {1}`, uri.path, error.message)
+				);
 			}
-			if (error.status === 404) {
-				throw vscode.FileSystemError.FileNotFound(uri);
-			}
-			throw error;
+			throw vscode.FileSystemError.Unavailable(uri);
 		}
 
-		throw Error(vscode.l10n.t("Unable to show error message."));
+		vscode.window.showErrorMessage(
+			vscode.l10n.t("Unable to show error message.")
+		);
+		throw vscode.FileSystemError.Unavailable(uri);
 	};
 	return errorHandler;
 };
