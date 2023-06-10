@@ -1,12 +1,12 @@
 {
-  "name": "webdav",
+  "name": "webdav-folders",
   "displayName": "%displayName%",
   "description": "%description%",
   "publisher": "jonpfote",
   "icon": "webdav-logo.png",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.79.0"
+    "vscode": "^1.68.0"
   },
   "categories": [
     "Other"
@@ -14,15 +14,66 @@
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": true
-    }
+    },
+    "virtualWorkspaces": true
   },
   "activationEvents": [
+    "onCommand:jonpfote.webdav-folders.connect",
     "onFileSystem:webdav"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-    ]
+      {
+        "title": "%command.connect.title%",
+        "command": "jonpfote.webdav-folders.connect"
+      }
+    ],
+    "configuration": {
+      "title": "%displayName%",
+      "properties": {
+        "jonpfote.webdav-folders": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["host"],
+            "default": {
+              "host": "example.com",
+              "ssl": true,
+              "authtype": "basic",
+              "username": "my-user",
+              "password": "my-pass"
+            },
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Provide a hostname like \"example.com\" or \"my-site.com:1234\"."
+              },
+              "ssl": {
+                "type": "boolean",
+                "description": "(optional) True uses 'https' connections (default); false uses 'http'"
+              },
+              "authtype": {
+                "type": "string",
+                "enum": ["basic", "digest"],
+                "description": "(optional) Select the Type of authentication your server supports"
+              },
+              "username": {
+                "type": "string",
+                "description": "(optional) Username for authentication"
+              },
+              "password": {
+                "type": "string",
+                "description": "(optional) Password for authentication"
+              }
+            }
+          },
+          "markdownDescription": "Add folders by their ID to connect the server with `webdav://my-folder-id`."
+        }
+      }
+    }
   },
 	"l10n": "./l10n",
   "scripts": {

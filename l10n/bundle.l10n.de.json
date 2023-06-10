@@ -11,5 +11,8 @@
 	"The Extension could not be initialized.": "Die Erweiterung konnte nicht initialisiert werden.",
 	"Error for file \"{0}\"; {1}": "Fehler für Datei \"{0}\"; {1}",
 	"Error {0} for file \"{1}\"; {2}": "Fehler {0} für Datei \"{1}\"; {2}",
-	"Unable to show error message.": "Die Fehlermeldung kann nicht angezeigt werden."
+	"Unable to show error message.": "Die Fehlermeldung kann nicht angezeigt werden.",
+	"Connect to a WebDAV Server: Select the server ID": "Mit einem WebDAV-Server verbinden: Server-Nummer auswählen",
+	"Pick the correct server ID": "Wähle die richtige Server-Nummer aus",
+	"You have to create a configuration \"jonpfote.webdav-folders\" before you try to add a WebDAV server to the workspace.": "Erstelle zuerst die richtige Konfiguration in \"jonpfote.webdav-folders\" bevor du versuchst einen WebDAV-Server zum Arbeitsplatz hinzuzufügen."
 }

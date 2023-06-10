@@ -1,4 +1,5 @@
 {
-	"displayName": "WebDAV Filesystem",
-	"description": "Connect to a WebDAV server using a `.code-workspace` file to use a virtual filesystem."
+	"displayName": "WebDAV Folders",
+	"description": "Connect to a WebDAV server using a `.code-workspace` file to use a virtual filesystem.",
+	"command.connect.title": "WebDAV Folders: Connect to WebDAV-Server"
 }

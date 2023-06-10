@@ -1,4 +1,5 @@
 {
-	"displayName": "WebDAV Dateisystem",
-	"description": "Verbinden Sie sich mit einem WebDAV-Server durch eine `.code-workspace`-Datei, um ein virtuelles Dateisystem zu nutzen."
+	"displayName": "WebDAV Ordner",
+	"description": "Verbinden Sie sich mit einem WebDAV-Server durch eine `.code-workspace`-Datei, um ein virtuelles Dateisystem zu nutzen.",
+	"command.connect.title": "WebDAV Ordner: Mit WebDAV-Server verbinden"
 }

@@ -314,7 +314,7 @@ export default class WebdavFS {
 
 		// Get the config of the current workspace
 		const workspaceConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('jonpfote.webdav-folders');
-		if(!workspaceConfig) {
+		if(!workspaceConfig || typeof workspaceConfig !== "object") {
 			throw vscode.FileSystemError.FileNotFound(vscode.l10n.t("The Config is invalid: No config found."));
 		}
 
