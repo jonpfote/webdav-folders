@@ -1,7 +1,9 @@
 {
   "name": "webdav",
-  "displayName": "WebDav",
-  "description": "",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "publisher": "jonpfote",
+  "icon": "webdav-logo.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.79.0"

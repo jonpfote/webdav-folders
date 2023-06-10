@@ -1,0 +1,4 @@
+{
+	"displayName": "WebDAV Filesystem",
+	"description": "Connect to a WebDAV server using a `.code-workspace` file to use a virtual filesystem."
+}
