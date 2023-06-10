@@ -21,6 +21,10 @@
     "onCommand:jonpfote.webdav-folders.connect",
     "onFileSystem:webdav"
   ],
+  "repository": {
+    "url": "https://github.com/jonpfote/webdav-folders"
+  },
+  "private": true,
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
