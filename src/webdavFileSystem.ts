@@ -417,12 +417,12 @@ const handleErrorFromUri = (uri: vscode.Uri): (reason: any) => PromiseLike<never
 				}
 
 
-				vscode.window.showErrorMessage(
-					vscode.l10n.t(`Error {0} for file "{1}"; {2}`, error.status ?? error.code, uri.path, error.message)
-				);
 				if (error.status === 403 || error.status === 401 || error.status === 507 || error.code === 'NoPermissions') {
 					throw vscode.FileSystemError.NoPermissions(uri);
 				}
+				vscode.window.showErrorMessage(
+					vscode.l10n.t(`Error {0} for file "{1}"; {2}`, error.status ?? error.code, uri.path, error.message)
+				);
 			} else {
 				vscode.window.showErrorMessage(
 					vscode.l10n.t(`Error for file "{0}"; {1}`, uri.path, error.message)
