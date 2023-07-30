@@ -76,6 +76,10 @@
               "password": {
                 "type": "string",
                 "description": "(optional) Password for authentication"
+              },
+              "watchTimeout": {
+                "type": "number",
+                "description": "(optional) [WARN] Ask Server every X seconds for file changes. Should NOT be used in workspaces with many files. This extension ignores the include/exclude list from settings."
               }
             }
           },

@@ -41,8 +41,55 @@ export default class WebdavFS {
 	 */
 	// eslint-disable-next-line no-unused-vars
 	watch(_resource: vscode.Uri) {
-		// as WebDAV does not support watching files don't do anything
-		return new vscode.Disposable(() => {});
+		// as WebDAV does not support watching files, don't do anything normally
+
+		// use the option "watchTimeout" with care. It is not officially supported.
+		// This implementation ignores glob patterns like "**.txt" or "node_modules/*/**.js".
+		//
+		const vscodeDisposableNull = new vscode.Disposable(() => true);
+		const workspaceConfig: vscode.WorkspaceConfiguration | undefined = vscode.workspace.getConfiguration().get('jonpfote.webdav-folders');
+		if(!workspaceConfig || typeof workspaceConfig !== "object") {
+			return vscodeDisposableNull;
+		}
+		const webdavFolderConfig: any = workspaceConfig[_resource.authority];
+		if(!webdavFolderConfig || typeof webdavFolderConfig !== "object" || Array.isArray(webdavFolderConfig)) {
+			return vscodeDisposableNull;
+		}
+
+		if(!webdavFolderConfig.watchTimeout || typeof webdavFolderConfig.watchTimeout !== "number" || isNaN(webdavFolderConfig.watchTimeout)) {
+			return vscodeDisposableNull;
+		}
+
+		let filemtime = 0;
+		const checkForChanges = async () => {
+			let newStatData;
+			try {
+				newStatData = await this.stat(_resource);
+			} catch (error) {}
+
+			if(typeof newStatData === "undefined") {
+				if(!filemtime) {
+					clearInterval(intervalId);
+					return;
+				}
+				this._emitter.fire([{ type: vscode.FileChangeType.Deleted, uri: _resource}]);
+				return;
+			}
+
+			if(filemtime && filemtime !== newStatData.mtime) {
+				this._emitter.fire([{ type: vscode.FileChangeType.Changed, uri: _resource}]);
+			}
+			filemtime = newStatData.mtime;
+		};
+
+		checkForChanges();
+		const intervalId = setInterval(checkForChanges, webdavFolderConfig.watchTimeout*1000);
+
+		return new vscode.Disposable(() => {
+			if(intervalId) {
+				clearInterval(intervalId);
+			}
+		});
 	}
 
 	/**
